@@ -92,11 +92,11 @@ The **single purpose** of the Extension is: when a user submits a configuration 
 
 Used by the Background Service Worker to send cross-origin requests to the company's internal AI validation service. Refer to the `host_permissions` field in the Extension's manifest.json for the exact host scope.
 
-### 6.2 Content Scripts (`matches: ['<all_urls>']`)
+### 6.2 Content Scripts (限定域名白名单 / Domain Allowlist)
 
-拦截器脚本必须运行在 MAIN World 才能 Hook 页面级 `fetch` / `XMLHttpRequest`。由于支持的内部配置平台分布在多个二级域名，故采用 `<all_urls>` 匹配；运行时通过内置白名单二次校验 host，**只有命中预置内部平台规则的请求才会触发校验流程，对其他网站零干扰、零数据采集**。
+拦截器脚本必须运行在 MAIN World 才能 Hook 页面级 `fetch` / `XMLHttpRequest`。本插件已将 content script 的 `matches` 严格限定为收录在内部白名单（`MATCH_PATTERNS`）中的少量公司内部配置平台域名，**未采用 `<all_urls>` 或任何宽泛匹配**。在白名单外的任何网站上，本插件**不会**被浏览器加载，零干扰、零数据采集。运行时还会通过与业务规则联动的 host 二次校验，只有命中预置内部平台规则的请求才会触发校验流程。完整的匹配范围请参阅本插件 manifest.json 中的 `content_scripts.matches` 字段。
 
-The interceptor script must run in the MAIN World to hook the page-level `fetch` / `XMLHttpRequest`. Because the supported internal configuration platforms are spread across multiple sub-domains, `<all_urls>` matching is used; at runtime, a built-in host whitelist re-validates each request, so the validation flow is triggered ONLY when a pre-configured internal platform rule matches. **Other websites are completely unaffected — zero interception, zero data collection.**
+The interceptor script must run in the MAIN World to hook the page-level `fetch` / `XMLHttpRequest`. The Extension strictly limits each content script's `matches` to a small allowlist (`MATCH_PATTERNS`) of internal corporate configuration-platform domains — **`<all_urls>` and other broad patterns are NOT used**. On any website outside the allowlist, the Extension is **NOT** loaded by the browser, resulting in zero interception and zero data collection. At runtime, an additional host check tied to the business rules ensures that the validation flow is triggered ONLY when a pre-configured internal platform rule matches. Refer to the `content_scripts.matches` field in the Extension's manifest.json for the exact match scope.
 
 ---
 
