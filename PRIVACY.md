@@ -2,7 +2,7 @@
 
 **生效日期 · Effective Date**: 2026-05-15
 **适用产品 · Applies To**: AI 配置校验助手
-**版本 · Version**: 1.0.0
+**版本 · Version**: 1.1.0
 **联系邮箱 · Contact**: config.validation@gmail.com
 
 ---
